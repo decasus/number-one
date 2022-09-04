@@ -3,7 +3,6 @@
   position: relative;
   align-items: center;
   flex-direction: column;
-  cursor: pointer;
   margin: 0 auto;
   background-color: #4db8ec;
   max-width: 632px;
@@ -11,4 +10,14 @@
   font-size: 16px;
   font-family: Open Sans,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
   overflow: hidden;
+}
+
+.game__items {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 485px;
+  margin: 0 auto;
 }

@@ -1,50 +1,49 @@
 import {useEffect, useState} from "react";
 import styles from '../styles/Game.module.scss'
+import Number from './number'
+import GameTask from "./task";
 
 const Game = () => {
 
     const [arrayValues, setArrayValues] = useState([]);
     const [rightKey, setRightKey] = useState(0);
 
-    function createValues() {
+    useEffect(() => {
+        setArrayValues(createRandomValues(6));
+        setRightKey(Math.floor(Math.random() * arrayValues.length));
+    }, [])
+
+    function createRandomValues(length) {
         const values = [];
-        while (values.length < 6) {
+        while (values.length < length) {
             const randomInt = getRandomInt(Math.pow(10, 1), Math.pow(10, 2));
             if (values.indexOf(randomInt) === -1) values.push(randomInt);
         }
         return values;
     }
 
-    useEffect(() => {
-        setArrayValues(createValues());
-    }, [])
-
-    useEffect(() => {
-        setRightKey(Math.floor(Math.random() * arrayValues.length));
-    }, [arrayValues])
-
-    const handleClick = (index) => {
-        if (index === rightKey) console.log("Верно!")
+    const handleClick = (itemIndex) => {
+        if (itemIndex === rightKey) {
+            setArrayValues(createRandomValues(9));
+            setRightKey(Math.floor(Math.random() * arrayValues.length));
+        }
     }
 
     return (
         <div className={styles.game}>
-            Найдите значение: {arrayValues[rightKey]}
+            {/*{<button onClick={() => setArrayValues(createRandomValues(6))}>START</button>}*/}
+            <GameTask value={arrayValues[rightKey]}/>
+            <div className={styles.game__items}>
             {arrayValues.map((item, index) => {
-                return (
-                    <button key={index} onClick={() => handleClick(index)}>{item}</button>
-                )
+                return <Number key={index} handler={() => handleClick(index)} value={item} />
             })}
+            </div>
         </div>
     );
 };
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getRandomElem(array) {
-    return array[Math.floor(Math.random() * array.length)];
 }
 
 export default Game;
