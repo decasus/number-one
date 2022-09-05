@@ -7,35 +7,44 @@ const Game = () => {
 
     const [arrayValues, setArrayValues] = useState([]);
     const [rightKey, setRightKey] = useState(0);
+    const [gameLevel, setGameLevel] = useState(0);
 
     useEffect(() => {
-        setArrayValues(createRandomValues(6));
-        setRightKey(Math.floor(Math.random() * arrayValues.length));
+        createNumbers(6);
     }, [])
 
-    function createRandomValues(length) {
+    const createNumbers = (length) => {
         const values = [];
         while (values.length < length) {
             const randomInt = getRandomInt(Math.pow(10, 1), Math.pow(10, 2));
             if (values.indexOf(randomInt) === -1) values.push(randomInt);
         }
-        return values;
+        setArrayValues(values);
+        setRightKey(Math.floor(Math.random() * length));
     }
 
     const handleClick = (itemIndex) => {
         if (itemIndex === rightKey) {
-            setArrayValues(createRandomValues(9));
-            setRightKey(Math.floor(Math.random() * arrayValues.length));
+            setGameLevel(gameLevel < 9 ? gameLevel+1 : 9)
+            createNumbers(6)
+        }
+        else {
+            setGameLevel(gameLevel > 0 ? gameLevel-1 : 0)
+            createNumbers(6)
         }
     }
 
     return (
         <div className={styles.game}>
-            {/*{<button onClick={() => setArrayValues(createRandomValues(6))}>START</button>}*/}
+            {gameLevel}
             <GameTask value={arrayValues[rightKey]}/>
             <div className={styles.game__items}>
             {arrayValues.map((item, index) => {
-                return <Number key={index} handler={() => handleClick(index)} value={item} />
+                return (<Number
+                    key={index}
+                    handler={() => handleClick(index)}
+                    value={item}
+                />)
             })}
             </div>
         </div>
