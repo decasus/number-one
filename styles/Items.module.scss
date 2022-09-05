@@ -1,0 +1,22 @@
+@import "animations";
+
+.game__items {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 485px;
+  margin: 0 auto;
+
+  &_ng-enter {
+    animation: come-in .3s ease-out;
+    animation-fill-mode: forwards;
+  }
+  &_ng-leave {
+    animation: go-out .3s ease-in;
+    animation-fill-mode: forwards;
+  }
+
+}
+
