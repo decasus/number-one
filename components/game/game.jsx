@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {CSSTransition} from "react-transition-group";
+import {CSSTransition, SwitchTransition} from "react-transition-group";
 import GameTask from "../task/task";
 import GameMenu from "../menu/menu";
 import GameItems from "../items/items";
@@ -7,34 +7,17 @@ import {levelsLength, levelsPow} from "../../constants/constants";
 
 const Game = ({showResults}) => {
 
-    const [arrayValues, setArrayValues] = useState([]);
-    const [rightKey, setRightKey] = useState(0);
+    const [arrayValues, setArrayValues] = useState(() => createNumbers(0));
+    const [rightKey, setRightKey] = useState(() => Math.floor(Math.random() * 6));
     const [gameLevel, setGameLevel] = useState(0);
     const [gameScore, setGameScore] = useState(0);
-    const [transition, setTransition] = useState(false);
+    const [gameStep, setGameStep] = useState(0);
 
     let gameOver = false;
 
     useEffect(() => {
-        createNumbers();
-    }, [])
-
-    useEffect(() => {
         console.log("Level: " + gameLevel)
     }, [gameLevel])
-
-    const createNumbers = () => {
-        const values = [];
-        const length = levelsLength[gameLevel];
-        while (values.length < length) {
-            //const randomInt = getRandomInt(Math.pow(10, levelsPow[gameLevel] - 1), Math.pow(10, levelsPow[gameLevel]));
-            const randomInt = getRandomInt(Math.pow(10, 1), Math.pow(10, 2));
-            if (values.indexOf(randomInt) === -1) values.push(randomInt);
-        }
-        setArrayValues(values);
-        setRightKey(Math.floor(Math.random() * length));
-        setTransition(true);
-    }
 
     const handleClick = (itemIndex) => {
         if (gameOver) {
@@ -45,13 +28,9 @@ const Game = ({showResults}) => {
             if (gameLevel < 8) setGameLevel(gameLevel + 1)
             setGameScore(gameScore + (gameLevel + 1) * 10)
         } else if (gameLevel > 0) setGameLevel(gameLevel - 1)
-
-        setTransition(false);
-        setTimeout(() => {
-            createNumbers();
-            setTimeout(() => setTransition(true), 500)
-        }, 500);
-
+        setArrayValues(createNumbers(gameLevel));
+        setRightKey(Math.floor(Math.random() * levelsLength[gameLevel]));
+        setGameStep(gameStep+1);
     }
 
     const onFinishCount = () => {
@@ -65,20 +44,33 @@ const Game = ({showResults}) => {
     }
 
     return (
-        <div className="game">
+        <div>
             <GameMenu level={gameLevel} score={gameScore} onFinish={onFinishCount}/>
-            <CSSTransition in={transition} timeout={500} classNames="animate">
-                <div>
-                    <GameTask value={arrayValues[rightKey]}/>
-                    <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
-                </div>
-            </CSSTransition>
+            <SwitchTransition>
+                <CSSTransition key={gameStep} timeout={500} classNames="animate">
+                    <div>
+                        <GameTask value={arrayValues[rightKey]}/>
+                        <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
+                    </div>
+                </CSSTransition>
+            </SwitchTransition>
         </div>
     )
 }
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createNumbers(level) {
+    const values = [];
+    const length = levelsLength[level];
+    while (values.length < length) {
+        //const randomInt = getRandomInt(Math.pow(10, levelsPow[gameLevel] - 1), Math.pow(10, levelsPow[gameLevel]));
+        const randomInt = getRandomInt(Math.pow(10, 1), Math.pow(10, 2));
+        if (values.indexOf(randomInt) === -1) values.push(randomInt);
+    }
+    return values;
 }
 
 export default Game;

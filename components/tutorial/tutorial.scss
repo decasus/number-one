@@ -6,10 +6,21 @@
     width: 96px;
     height: 103px;
     position: absolute;
-    left: 90px;
-    top: 285px;
+    left: 88px;
+    top: 220px;
     transform: translate(-50%, -20px);
     z-index: 1;
     background: url(../../assets/icons/arm.svg) no-repeat;
+  }
+
+  &__text {
+    align-self: center;
+    width: 200px;
+    padding-bottom: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
   }
 }

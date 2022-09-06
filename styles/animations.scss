@@ -42,21 +42,3 @@
     transform: translate(-632px);
   }
 }
-
-.animate-enter {
-  transform: translate(632px);
-}
-
-.animate-enter-active {
-  transform: translate(0);
-  transition: transform 500ms;
-}
-
-.animate-exit {
-  transform: translate(0);
-}
-
-.animate-exit-active {
-  transform: translate(-632px);
-  transition: transform 500ms;
-}
