@@ -1,10 +1,16 @@
 import {animations, colors} from "../../constants/constants";
-import {memo} from "react";
+import {useMemo} from "react";
 
 const Number = ({animated, value, size, handler}) => {
-        const numColor = `game__item_${getRandomElem(colors)}`; // use memo
+
+        const numColor = useMemo(() => {
+            return `game__item_${getRandomElem(colors)}` // use memo
+        }, [value]);
+
         const numSize = `game__item_size-${size}`;
+
         const numAnim = animated ? `game__item_${getRandomElem(animations)}` : '';
+
         return (
             <button className={`game__item ${numColor} ${numSize} ${numAnim}`} onClick={handler}>
                 <span className="game__item-inner">{value}</span>
@@ -16,4 +22,4 @@ function getRandomElem(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-export default memo(Number);
+export default Number;

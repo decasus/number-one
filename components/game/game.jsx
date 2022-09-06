@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
+import {CSSTransition} from "react-transition-group";
 import GameTask from "../task/task";
 import GameMenu from "../menu/menu";
 import GameItems from "../items/items";
 import {levelsLength, levelsPow} from "../../constants/constants";
-import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 const Game = ({showResults}) => {
 
@@ -20,10 +20,8 @@ const Game = ({showResults}) => {
     }, [])
 
     useEffect(() => {
-        setTimeout(() => setTransition(true), 500)
         console.log("Level: " + gameLevel)
     }, [gameLevel])
-
 
     const createNumbers = () => {
         const values = [];
@@ -47,8 +45,13 @@ const Game = ({showResults}) => {
             if (gameLevel < 8) setGameLevel(gameLevel + 1)
             setGameScore(gameScore + (gameLevel + 1) * 10)
         } else if (gameLevel > 0) setGameLevel(gameLevel - 1)
+
         setTransition(false);
-        setTimeout(() => createNumbers(), 500);
+        setTimeout(() => {
+            createNumbers();
+            setTimeout(() => setTransition(true), 500)
+        }, 500);
+
     }
 
     const onFinishCount = () => {
@@ -65,10 +68,10 @@ const Game = ({showResults}) => {
         <div className="game">
             <GameMenu level={gameLevel} score={gameScore} onFinish={onFinishCount}/>
             <CSSTransition in={transition} timeout={500} classNames="animate">
-                <GameTask value={arrayValues[rightKey]}/>
-            </CSSTransition>
-            <CSSTransition in={transition} timeout={500} classNames="animate">
-                <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
+                <div>
+                    <GameTask value={arrayValues[rightKey]}/>
+                    <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
+                </div>
             </CSSTransition>
         </div>
     )

@@ -1,0 +1,15 @@
+.tutorial {
+  animation: come-in .3s ease-out;
+  animation-fill-mode: forwards;
+
+  &__arm {
+    width: 96px;
+    height: 103px;
+    position: absolute;
+    left: 90px;
+    top: 285px;
+    transform: translate(-50%, -20px);
+    z-index: 1;
+    background: url(../../assets/icons/arm.svg) no-repeat;
+  }
+}
