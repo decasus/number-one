@@ -7,8 +7,10 @@ export default function Document() {
                 <title>Numbers</title>
                 <meta name="description" content="Numbers game on React"/>
                 <link rel="icon" href="/favicon.ico"/>
+                <link rel="preconnect" href="https://fonts.googleapis.com"/>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin/>
                 <link
-                    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+                    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&family=Open+Sans:wght@400;500;700&display=swap"
                     rel="stylesheet"/>
             </Head>
             <body>

@@ -1,13 +1,12 @@
 .tutorial {
-  animation: come-in .3s ease-out;
-  animation-fill-mode: forwards;
+  cursor: pointer;
 
   &__arm {
     width: 96px;
     height: 103px;
     position: absolute;
-    left: 88px;
-    top: 220px;
+    left: 161px;
+    top: 282px;
     transform: translate(-50%, -20px);
     z-index: 1;
     background: url(../../assets/icons/arm.svg) no-repeat;

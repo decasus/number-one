@@ -8,7 +8,6 @@
   max-width: 632px;
   height: 478px;
   font-size: 16px;
-  font-family: Open Sans,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
   overflow: hidden;
   cursor: default;
 }
@@ -31,4 +30,21 @@
   transition: transform 500ms;
 }
 
+.switch-enter {
+  opacity: 0;
+}
+
+.switch-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+
+.switch-exit {
+  opacity: 1;
+}
+
+.switch-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
 

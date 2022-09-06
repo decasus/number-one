@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import GameTask from "../task/task";
 import GameMenu from "../menu/menu";
@@ -6,12 +6,11 @@ import GameItems from "../items/items";
 import {levelsLength, levelsPow} from "../../constants/constants";
 
 const Game = ({showResults}) => {
-
-    const [arrayValues, setArrayValues] = useState(() => createNumbers(0));
-    const [rightKey, setRightKey] = useState(() => Math.floor(Math.random() * 6));
     const [gameLevel, setGameLevel] = useState(0);
     const [gameScore, setGameScore] = useState(0);
     const [gameStep, setGameStep] = useState(0);
+    const [arrayValues, setArrayValues] = useState(createNumbers(0));
+    const [rightKey, setRightKey] = useState(Math.floor(Math.random() * 6));
 
     let gameOver = false;
 
@@ -24,13 +23,20 @@ const Game = ({showResults}) => {
             stopGame();
             return;
         }
+        setGameStep(gameStep + 1);
+        let level = gameLevel;
         if (itemIndex === rightKey) {
-            if (gameLevel < 8) setGameLevel(gameLevel + 1)
-            setGameScore(gameScore + (gameLevel + 1) * 10)
-        } else if (gameLevel > 0) setGameLevel(gameLevel - 1)
-        setArrayValues(createNumbers(gameLevel));
-        setRightKey(Math.floor(Math.random() * levelsLength[gameLevel]));
-        setGameStep(gameStep+1);
+            if (gameLevel < 8) {
+                setGameLevel(gameLevel + 1);
+                level++;
+            }
+            setGameScore(gameScore + (level) * 10);
+        } else if (gameLevel > 0) {
+            setGameLevel(gameLevel - 1)
+            level--;
+        }
+        setArrayValues(createNumbers(level));
+        setRightKey(Math.floor(Math.random() * levelsLength[level]));
     }
 
     const onFinishCount = () => {
@@ -43,19 +49,19 @@ const Game = ({showResults}) => {
         showResults(gameScore);
     }
 
-    return (
-        <div>
+    const nodeRef = useRef(null);
+
+    return (<div>
             <GameMenu level={gameLevel} score={gameScore} onFinish={onFinishCount}/>
             <SwitchTransition>
-                <CSSTransition key={gameStep} timeout={500} classNames="animate">
-                    <div>
+                <CSSTransition nodeRef={nodeRef} key={gameStep} timeout={500} classNames="animate">
+                    <div ref={nodeRef}>
                         <GameTask value={arrayValues[rightKey]}/>
                         <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
                     </div>
                 </CSSTransition>
             </SwitchTransition>
-        </div>
-    )
+        </div>)
 }
 
 function getRandomInt(min, max) {
