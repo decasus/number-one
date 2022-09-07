@@ -9,34 +9,34 @@ const Game = ({showResults}) => {
     const [gameLevel, setGameLevel] = useState(0);
     const [gameScore, setGameScore] = useState(0);
     const [gameStep, setGameStep] = useState(0);
-    const [arrayValues, setArrayValues] = useState(createNumbers(0));
-    const [rightKey, setRightKey] = useState(Math.floor(Math.random() * 6));
+    const [arrayValues, setArrayValues] = useState(() => createNumbers(0));
+    const [rightKey, setRightKey] = useState(() => Math.floor(Math.random() * 6));
 
     let gameOver = false;
 
     useEffect(() => {
         console.log("Level: " + gameLevel)
-    }, [gameLevel])
+        if (gameStep > 0) {
+            setArrayValues(createNumbers(gameLevel));
+            setRightKey(Math.floor(Math.random() * levelsLength[gameLevel]));
+        }
+    }, [gameStep])
+
+    useEffect(() => {
+        console.log("render")
+    }, [arrayValues]);
+
 
     const handleClick = (itemIndex) => {
         if (gameOver) {
             stopGame();
             return;
         }
-        setGameStep(gameStep + 1);
-        let level = gameLevel;
         if (itemIndex === rightKey) {
-            if (gameLevel < 8) {
-                setGameLevel(gameLevel + 1);
-                level++;
-            }
-            setGameScore(gameScore + (level) * 10);
-        } else if (gameLevel > 0) {
-            setGameLevel(gameLevel - 1)
-            level--;
-        }
-        setArrayValues(createNumbers(level));
-        setRightKey(Math.floor(Math.random() * levelsLength[level]));
+            if (gameLevel < 8) setGameLevel(gameLevel + 1);
+            setGameScore(gameScore + gameLevel * 10);
+        } else if (gameLevel > 0) setGameLevel(gameLevel - 1)
+        setGameStep(gameStep + 1);
     }
 
     const onFinishCount = () => {
@@ -52,16 +52,16 @@ const Game = ({showResults}) => {
     const nodeRef = useRef(null);
 
     return (<div>
-            <GameMenu level={gameLevel} score={gameScore} onFinish={onFinishCount}/>
-            <SwitchTransition>
-                <CSSTransition nodeRef={nodeRef} key={gameStep} timeout={500} classNames="animate">
-                    <div ref={nodeRef}>
-                        <GameTask value={arrayValues[rightKey]}/>
-                        <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
-                    </div>
-                </CSSTransition>
-            </SwitchTransition>
-        </div>)
+        <GameMenu level={gameLevel} score={gameScore} onFinish={onFinishCount}/>
+        <SwitchTransition>
+            <CSSTransition nodeRef={nodeRef} key={gameStep} timeout={500} classNames="animate">
+                <div ref={nodeRef}>
+                    <GameTask value={arrayValues[rightKey]}/>
+                    <GameItems values={arrayValues} level={gameLevel} handler={handleClick}/>
+                </div>
+            </CSSTransition>
+        </SwitchTransition>
+    </div>)
 }
 
 function getRandomInt(min, max) {
