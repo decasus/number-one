@@ -22,11 +22,6 @@ const Game = ({showResults}) => {
         }
     }, [gameStep])
 
-    useEffect(() => {
-        console.log("render")
-    }, [arrayValues]);
-
-
     const handleClick = (itemIndex) => {
         if (gameOver) {
             stopGame();

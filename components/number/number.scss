@@ -49,6 +49,11 @@
     background: #4db8ec;;
   }
 
+  &_disabled {
+    opacity: .5;
+  }
+
+
   &_size-1 {
     width: 30%;
     line-height: 80px;

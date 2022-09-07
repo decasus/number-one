@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 
 const GameMenu = ({level, score, onFinish}) => {
-    const [counter, setCounter] = useState(60);
+    const [counter, setCounter] = useState(15);
 
     useEffect(() => {
         counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);

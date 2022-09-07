@@ -1,6 +1,3 @@
-import {CSSTransition} from 'react-transition-group';
-import {useEffect, useState} from "react";
-
 const GameTask = ({value}) => {
 
     return (
